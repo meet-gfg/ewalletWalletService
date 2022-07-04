@@ -1,0 +1,71 @@
+Ewallet ->
+1.We have users in system, to whom we will assign a wallet to each with some initial balance.
+2. User can recharge the wallet
+3. Users can perform a transaction among themselves and wallet will be updated accordingly.
+4. Users will get notofication on each transaction performed and updated their updated wallet balance.
+
+Entities
+1. User
+2. Transaction
+3. Wallet
+4. Notification
+
+
+Functionalties
+1.signup and register a user -done
+2.create a wallet for a registered user -done
+3.add a balance to wallet
+4.check balance of your wallet -done
+5.Transaction of intra user. ( deposit to wallet OR withdraw from wallet)
+6.Perfrom a transaction between 2 users.
+7.Fetch transaction history
+8.Send notification on the complete transaction ( where transaction could be success or failed)
+
+
+Services:
+com.gfg.ewallet.service
+UserService -> signin,signup,update or delete a user
+WalletService -> Create a wallet,show balance
+NotificationService -> Send a notification via email/sms on complete of tranaction
+TransactionService -> Handle a transaction between 2 users. and  add/withdraw balance consider a transaction
+
+
+1.micro service ->UserService -> handling all the user related activites --> DB: user
+2.micro service -> WalletService -> could be handling all wallet updates --> DB: wallet
+3.micro service -> TransactionService -> get a transaction request from user,
+	call wallet service update the wallet and store the transaction status can call notify --> DB  transaction
+4.micro sercice -> NotificationService -> notify the involved users in transaction about the status and balance.  --> DB notification // ?
+
+Communication outside the services will handle by REST and inter service communication will be with Kafka.
+
+UserService
+APIs
+POST      /user/signup
+GET       /user/profile
+DELETE    /user/remove
+PUT/PATCH /user/profile/update   -> all apis**/user/** need authrity of USER
+
+EVENT
+TOPIC (USER_CREATE) ->Publish -> userID
+TOPIC (USER_REMOVE) ->Publish -> userID
+
+WalletService
+APIs
+GET  /wallet/details
+
+
+
+EVENT
+Receive event -> Consumer -> USER_CREATED -> create a wallet.
+
+
+
+
+
+
+
+
+
+
+
+

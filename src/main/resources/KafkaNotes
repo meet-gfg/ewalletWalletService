@@ -1,0 +1,120 @@
+Kafka download link : https://kafka.apache.org/downloads
+
+Kafka notes ppt ->
+1. PPT with real life scenarios and examples: Credits: Paul Brebner
+        https://www.slideshare.net/PaulBrebner/a-visual-introduction-to-apache-kafka
+
+2. PPT for understanding the kafka functioning : Credits: confluent
+    https://www.slideshare.net/ConfluentInc/apache-kafka-architecture-fundamentals-explained
+
+
+Partitions and consumer group scenarios understanding
+
+Only 1 consumer from consumer group will be able to read from a partition of a topic and a one cosumer from a consumer group can read multiple partitions.
+A topic can have multiple partitions and One topic can have n consumers.
+
+There should not be more partition than that of the number of consumer in consumer group
+
+Ex: 5 consumer in a consumer group
+
+	1 partition -> 1 consumer from consumer group will be active and 4 will be idle
+	3 partition -> 3 consumer from consumer group will be active and 2 will be idle
+	6 partition -> 5 consumer from consumer group will be active and 1 will be overloaded for reading 2 partitions.
+				 [t1,p1,0]
+				 [t1,p6,0]
+				 [t1,p1,1]
+				 [t1,p6,1]
+
+
+A topic should not have more partition than that of the number of consumer in the/a consumer group.
+
+
+Offset =[ topic, partition,index] based on which consumer will ask a new message.
+
+Scenario 1:
+There are 2 partition of a topic and one consumer in one consumer group.
+
+Behaviour:
+One consumer from grp will read all messages.
+topic t1 -> p1 p2
+
+cg1 -> [t1,p1,0]
+	 [t1,p2,0]
+	 [t1,p1,1]
+	 [t1,p2,1]
+
+Scenario 2: There is only one partition and 2 consumer in a consumer group.
+
+Behaviour:
+only one consumer will be able to read the message
+
+topic -> t1 , p1
+
+cg1 -> [t1,p1,0]
+       [t1,p1,1]
+
+cg2-> idle mode
+
+Scenario 3: There are 2 partitions and 3 consumers in a consumer group, where the 2nd consumer dies after reading 1 message.
+
+Behaviour:
+
+cg1 -> [t1,p1,0]
+       [t1,p1,1]
+
+cg2-> [t1,p2,0]
+      [t1,p2,1]
+
+cg3 -> idle mode
+
+---- When cg2 dies---
+
+cg1 -> [t1,p1,0]
+       [t1,p1,1]
+
+cg3 -> [t1,p2,2]
+
+
+
+2 partition between john and jenny over chat application
+
+hi ->p1
+hello -> p1
+how are you -> p2
+
+
+hi
+how are you
+hello
+
+
+
+
+there should not more partition than that of the number of consumer in consumer group
+
+
+
+				Bank Tellor counter
+
+				     counter 1   a,c/b,b/c,d -> acbd -> abcd
+
+					a	c
+					b     d
+
+
+					counter 1   abcd
+
+					  a
+					  b
+					  c
+					  d
+
+
+
+
+
+
+
+
+
+
