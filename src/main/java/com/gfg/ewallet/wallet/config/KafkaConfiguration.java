@@ -27,9 +27,23 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConsumerFactory getProducerFactory(){
+    public ConsumerFactory getConsumerFactory(){
         return new DefaultKafkaConsumerFactory(getConsumerConfig());
     }
+
+    public Map<String,Object> getProducerConfig(){
+        Map<String,Object> producerConfig=new HashMap<>();
+        producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"localhost:9092");
+        producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class);
+        return producerConfig;
+    }
+
+    @Bean
+    public ProducerFactory getProducerFactory(){
+        return new DefaultKafkaProducerFactory(getProducerConfig());
+    }
+
 
     @Bean
     public ObjectMapper getObjectMapper(){
